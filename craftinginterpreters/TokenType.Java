@@ -1,4 +1,4 @@
-package com.craftinginterpreters.lox;
+package craftinginterpreters;
 
 // holds all the lexemes that the scanner will use to convert the code to living runtime objects
 enum TokenType {

@@ -1,11 +1,11 @@
-package com.craftinginterpreters.lox;
+package craftinginterpreters;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static com.craftinginterpreters.lox.TokenType.*;
+import craftinginterpreters.Token.*;
 
 public class Scanner {
     private final String source;
@@ -68,6 +68,7 @@ public class Scanner {
             case ' ':
             case '\r':
             case '\t':
+                // Ignore whitespace.
                 break;
           
             case '\n':

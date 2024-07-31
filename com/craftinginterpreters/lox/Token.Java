@@ -1,4 +1,4 @@
-package craftinginterpreters;
+package com.craftinginterpreters.lox;
 
 // Holds the tokenized console console text after being parsed by the scanner
 class Token {

@@ -1,11 +1,11 @@
-package craftinginterpreters;
+package com.craftinginterpreters.lox;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import craftinginterpreters.Token.*;
+import static com.craftinginterpreters.lox.TokenType.*;
 
 public class Scanner {
     private final String source;
@@ -19,7 +19,7 @@ public class Scanner {
     }
 
     List<Token> scanTokens() {
-        while (!isAtEnd) {
+        while (!isAtEnd()) {
             start = current;
             scanToken();
         }
@@ -59,11 +59,13 @@ public class Scanner {
             case '/':
                 if (match('/')) {
                     // A comment goes until the end of the line
-                    while (peek() != '\n' && !isAtEnd()) advance();
+                  while (peek() != '\n' && !isAtEnd()) advance();
                 } else {
                     addToken(SLASH);
                 }
                 break;
+
+            case '"': string(); break;
 
             case ' ':
             case '\r':
@@ -84,6 +86,23 @@ public class Scanner {
         }
     }
 
+    private void string() {
+        while (peek() != '"' && !isAtEnd()) {
+            if (peek() == '\n') line++;
+            advance();
+        }
+
+        if (isAtEnd()) {
+            Lox.error(line, "Unterminated string.");
+            return;
+        }
+
+        advance();
+
+        String value = source.substring(start + 1, current - 1);
+        addToken(STRING, value);
+    }
+
     private boolean match(char expected) {
         // Checks if the next character is expected value ( or conditional advance() )
         if (isAtEnd()) return false;
@@ -99,7 +118,7 @@ public class Scanner {
     }
 
     private boolean isAtEnd() {
-        return current >= source.Length();
+        return current >= source.length();
     }
 
     private char advance() {
